@@ -82,7 +82,7 @@ class VehicleController extends Controller
      */
     public function update(Request $request, Vehicle $vehicle)
     {
-        $input = $request->all();
+        $input = $request->only('year', 'make', 'model', 'vin');
 
         $validator = Validator::make($input, [
             'year'  => 'required|integer',
@@ -97,11 +97,7 @@ class VehicleController extends Controller
         if ($validator->fails()) {
             return $this->resError('Validation Error.', $validator->errors());
         }
-
-        $vehicle->year = $input['year'];
-        $vehicle->make = $input['make'];
-        $vehicle->model = $input['model'];
-        $vehicle->vin = $input['vin'];
+        $vehicle->fill($input);
         $vehicle->save();
 
         return $this->resSuccess(

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\KeyController;
 use App\Http\Controllers\Api\VehicleController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,12 @@ Route::controller(VehicleController::class)->prefix('vehicles')->group(function 
     Route::get('/{vehicle}', 'show');
     Route::put('/{vehicle}', 'update');
     Route::delete('/{vehicle}', 'destroy');
+});
+
+Route::controller(KeyController::class)->prefix('keys')->group(function () {
+    Route::get('/', 'index');
+    Route::post('/', 'store');
+    Route::get('/{key}', 'show');
+    Route::put('/{key}', 'update');
+    Route::delete('/{key}', 'destroy');
 });
