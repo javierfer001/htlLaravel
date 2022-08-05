@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KeyController;
+use App\Http\Controllers\Api\TechnicianController;
 use App\Http\Controllers\Api\VehicleController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,4 +36,12 @@ Route::controller(KeyController::class)->prefix('keys')->group(function () {
     Route::get('/{key}', 'show');
     Route::put('/{key}', 'update');
     Route::delete('/{key}', 'destroy');
+});
+
+Route::controller(TechnicianController::class)->prefix('technicians')->group(function () {
+    Route::get('/', 'index');
+    Route::post('/', 'store');
+    Route::get('/{technician}', 'show');
+    Route::put('/{technician}', 'update');
+    Route::delete('/{technician}', 'destroy');
 });
