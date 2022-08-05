@@ -1,7 +1,7 @@
 export default {
   // Endpoints
-  loginEndpoint: '/jwt/login',
-  registerEndpoint: '/jwt/register',
+  loginEndpoint: '/api/auth/login',
+  registerEndpoint: '/api/auth/register',
   refreshEndpoint: '/jwt/refresh-token',
   logoutEndpoint: '/jwt/logout',
 

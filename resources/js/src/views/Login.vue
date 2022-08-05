@@ -5,7 +5,7 @@
       <!-- Brand logo-->
       <b-link class="brand-logo">
         <h2 class="brand-text text-primary ml-1">
-          Kar Global
+          HTL
         </h2>
       </b-link>
       <!-- /Brand logo-->
@@ -74,9 +74,6 @@
               <b-form-group>
                 <div class="d-flex justify-content-between">
                   <label for="login-password">Password</label>
-                  <b-link :to="{name:'auth-forgot-password-v2'}">
-                    <small>Forgot Password?</small>
-                  </b-link>
                 </div>
                 <validation-provider
                   #default="{ errors }"
@@ -119,6 +116,12 @@
               </b-button>
             </b-form>
           </validation-observer>
+            <b-card-text class="text-center mt-2">
+                <span>New on our platform? </span>
+                <b-link :to="{name:'register'}">
+                    <span>Create an account</span>
+                </b-link>
+            </b-card-text>
         </b-col>
       </b-col>
     <!-- /Login-->
@@ -136,6 +139,7 @@ import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import store from '@/store/index'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import useJwt from '@/auth/jwt/useJwt'
 
 export default {
   components: {
@@ -146,8 +150,8 @@ export default {
     BFormInput,
     BInputGroupAppend,
     BInputGroup,
-    BCardText,
     BCardTitle,
+    BCardText,
     BImg,
     BForm,
     BButton,
@@ -158,8 +162,8 @@ export default {
   data() {
     return {
       status: '',
-      password: '',
-      userEmail: '',
+      password: '1234asd',
+      userEmail: 'javier1@gmail.com',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
       // validation rulesimport store from '@/store/index'
       required,
@@ -183,13 +187,36 @@ export default {
     validationForm() {
       this.$refs.loginValidation.validate().then(success => {
         if (success) {
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Form Submitted',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
+          useJwt.login({
+            email: this.userEmail,
+            password: this.password,
+          }).then(response => {
+            const data = { ...response.data.data, ...{ role: 'admin' } }
+            useJwt.setToken(response.data.token)
+            useJwt.setRefreshToken(response.data.token)
+            localStorage.setItem('userData', JSON.stringify(data))
+            this.$router.replace('/home').then(() => {
+              this.$toast({
+                component: ToastificationContent,
+                position: 'top-right',
+                props: {
+                  title: `Welcome ${data.user.name || data.user.email}`,
+                  icon: 'CoffeeIcon',
+                  variant: 'success',
+                },
+              })
+            })
+              .catch(error => {
+                console.error(error)
+                this.$toast({
+                  component: ToastificationContent,
+                  props: {
+                    title: 'User or password incorrect',
+                    icon: 'EditIcon',
+                    variant: 'danger',
+                  },
+                })
+              })
           })
         }
       })

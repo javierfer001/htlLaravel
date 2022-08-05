@@ -11,28 +11,112 @@ const router = new VueRouter({
   },
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
-      component: () => import('@/views/Home.vue'),
+      component: () => import('@/views/order/List.vue'),
       meta: {
-        pageTitle: 'Home',
+        pageTitle: 'Order',
         breadcrumb: [
           {
-            text: 'Home',
+            text: 'Order',
             active: true,
           },
         ],
       },
     },
     {
-      path: '/second-page',
-      name: 'second-page',
-      component: () => import('@/views/SecondPage.vue'),
+      path: '/orders/:id',
+      name: 'orders-add',
+      component: () => import('@/views/order/Add.vue'),
       meta: {
-        pageTitle: 'Second Page',
+        pageTitle: 'Order',
         breadcrumb: [
           {
-            text: 'Second Page',
+            text: 'Order data',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/keys',
+      name: 'keys',
+      component: () => import('@/views/key/List.vue'),
+      meta: {
+        pageTitle: 'Key',
+        breadcrumb: [
+          {
+            text: 'Key',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/keys/:id',
+      name: 'keys-add',
+      component: () => import('@/views/key/Add.vue'),
+      meta: {
+        pageTitle: 'Key',
+        breadcrumb: [
+          {
+            text: 'Key data',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/technicians',
+      name: 'technicians',
+      component: () => import('@/views/technician/List.vue'),
+      meta: {
+        pageTitle: 'Technician',
+        breadcrumb: [
+          {
+            text: 'technician',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/technicians/:id',
+      name: 'technicians-add',
+      component: () => import('@/views/technician/Add.vue'),
+      meta: {
+        pageTitle: 'Technician',
+        breadcrumb: [
+          {
+            text: 'Technician data',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/vehicles',
+      name: 'vehicles',
+      component: () => import('@/views/vehicle/List.vue'),
+      meta: {
+        pageTitle: 'Vehicle',
+        breadcrumb: [
+          {
+            text: 'vehicle',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/vehicles/:id',
+      name: 'vehicles-add',
+      component: () => import('@/views/vehicle/Add.vue'),
+      meta: {
+        pageTitle: 'Vehicle',
+        breadcrumb: [
+          {
+            text: 'Vehicle data',
             active: true,
           },
         ],
@@ -46,6 +130,14 @@ const router = new VueRouter({
         layout: 'full',
       },
     },
+      {
+          path: '/register',
+          name: 'register',
+          component: () => import('@/views/Register.vue'),
+          meta: {
+              layout: 'full',
+          },
+      },
     {
       path: '/error-404',
       name: 'error-404',
@@ -56,7 +148,7 @@ const router = new VueRouter({
     },
     {
       path: '*',
-      redirect: 'error-404',
+      redirect: '/home',
     },
   ],
 })

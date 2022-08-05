@@ -14,4 +14,4 @@ use App\Http\Controllers\ApplicationController;
 |
 */
 
-Route::get('/htl/{any}', [ApplicationController::class, 'index'])->where('any', '.*');
+Route::get('/{any}', [ApplicationController::class, 'index'])->where('any', '.*');
