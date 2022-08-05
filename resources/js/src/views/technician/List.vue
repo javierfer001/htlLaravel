@@ -1,5 +1,14 @@
 <template>
-    <b-card-code>
+  <b-card-code>
+    <b-button
+      class="mb-1"
+      variant="outline-success"
+      href="/technicians/0"
+    >
+      <feather-icon
+        icon="PlusIcon"
+      />
+    </b-button>
     <!-- table -->
     <vue-good-table
       style-class="vgt-table bordered"
@@ -17,12 +26,18 @@
       >
         <!-- Column: Action -->
         <span v-if="props.column.field === 'action'">
-          <b-button variant="outline-primary">
+          <b-button
+            variant="outline-primary"
+            :href="'/technicians/' + props.row.id"
+          >
             <feather-icon
               icon="Edit2Icon"
             />
           </b-button>
-          <b-button variant="outline-danger">
+          <b-button
+            variant="outline-danger"
+            @click="edit(props.row.id)"
+          >
             <feather-icon
               icon="TrashIcon"
             />
@@ -101,6 +116,7 @@ import {
 import { VueGoodTable } from 'vue-good-table'
 
 import store from '@/store/index'
+import ToastificationContent from '@core/components/toastification/ToastificationContent'
 
 export default {
   components: {
@@ -156,6 +172,29 @@ export default {
       .then(res => {
         this.rows = res.data.data
       })
+  },
+  methods: {
+    edit(id) {
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm('Are you sure that you want to delete de record')) {
+        this.$http.delete(`/api/technicians/${id}`)
+          .then(() => {
+            this.$http.get('/api/technicians')
+              .then(res => {
+                this.rows = res.data.data
+              })
+          }).catch(() => {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'You can not delete the technician, other records are using it',
+                icon: 'EditIcon',
+                variant: 'danger',
+              },
+            })
+          })
+      }
+    },
   },
 }
 </script>

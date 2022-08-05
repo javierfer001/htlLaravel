@@ -13,12 +13,26 @@ const router = new VueRouter({
     {
       path: '/home',
       name: 'home',
-      component: () => import('@/views/Home.vue'),
+      component: () => import('@/views/order/List.vue'),
       meta: {
-        pageTitle: 'Home',
+        pageTitle: 'Order',
         breadcrumb: [
           {
-            text: 'Home',
+            text: 'Order',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/orders/:id',
+      name: 'orders-add',
+      component: () => import('@/views/order/Add.vue'),
+      meta: {
+        pageTitle: 'Order',
+        breadcrumb: [
+          {
+            text: 'Order data',
             active: true,
           },
         ],
@@ -67,6 +81,20 @@ const router = new VueRouter({
       },
     },
     {
+      path: '/technicians/:id',
+      name: 'technicians-add',
+      component: () => import('@/views/technician/Add.vue'),
+      meta: {
+        pageTitle: 'Technician',
+        breadcrumb: [
+          {
+            text: 'Technician data',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
       path: '/vehicles',
       name: 'vehicles',
       component: () => import('@/views/vehicle/List.vue'),
@@ -81,14 +109,14 @@ const router = new VueRouter({
       },
     },
     {
-      path: '/second-page',
-      name: 'second-page',
-      component: () => import('@/views/SecondPage.vue'),
+      path: '/vehicles/:id',
+      name: 'vehicles-add',
+      component: () => import('@/views/vehicle/Add.vue'),
       meta: {
-        pageTitle: 'Second Page',
+        pageTitle: 'Vehicle',
         breadcrumb: [
           {
-            text: 'Second Page',
+            text: 'Vehicle data',
             active: true,
           },
         ],

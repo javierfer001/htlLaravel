@@ -188,7 +188,7 @@ export default {
             this.$toast({
               component: ToastificationContent,
               props: {
-                title: 'You can not delete the key other records are using it',
+                title: 'You can not delete the key, other records are using it',
                 icon: 'EditIcon',
                 variant: 'danger',
               },

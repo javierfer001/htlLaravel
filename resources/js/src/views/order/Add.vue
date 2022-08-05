@@ -1,70 +1,81 @@
 <template>
   <b-card-code
-    title="Data Key"
+    title="Data Order"
   >
     <validation-observer ref="simpleRules">
       <b-form>
         <b-row>
           <b-col md="6">
-            <b-form-group>
+            <b-form-group label="Vehicle">
               <validation-provider
                 #default="{ errors }"
                 name="vehicle_id"
                 rules="required"
               >
-                <b-form-input
+                <b-form-select
                   v-model="data.vehicle_id"
-                  :state="errors.length > 0 ? false:null"
-                  placeholder="Vehicle ID"
+                  :options="vehiclesList"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
           </b-col>
           <b-col md="6">
-            <b-form-group>
+            <b-form-group label="Key">
               <validation-provider
                 #default="{ errors }"
-                name="name"
+                name="key_id"
+                rules="required"
+              >
+                <b-form-select
+                  v-model="data.key_id"
+                  :options="keysList"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+          <b-col md="6">
+            <b-form-group label="Technician">
+              <validation-provider
+                #default="{ errors }"
+                name="technician_id"
+                rules="required"
+              >
+                <b-form-select
+                  v-model="data.technician_id"
+                  :options="techniciansList"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+          <b-col md="6">
+            <b-form-group  label="Status">
+              <validation-provider
+                #default="{ errors }"
+                name="status"
+                rules="required"
+              >
+                <b-form-select
+                  v-model="data.status"
+                  :options="statusList"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+          <b-col md="6">
+            <b-form-group  label="Note">
+              <validation-provider
+                #default="{ errors }"
+                name="note"
                 rules="required"
               >
                 <b-form-input
-                  v-model="data.name"
+                  v-model="data.note"
                   :state="errors.length > 0 ? false:null"
-                  placeholder="Key name"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-          <b-col md="6">
-            <b-form-group>
-              <validation-provider
-                #default="{ errors }"
-                name="description"
-                rules="required"
-              >
-                <b-form-input
-                  v-model="data.description"
-                  :state="errors.length > 0 ? false:null"
-                  placeholder="Key Description"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-          <b-col md="6">
-            <b-form-group>
-              <validation-provider
-                #default="{ errors }"
-                name="price"
-                rules="required|positive"
-              >
-                <b-form-input
-                  v-model="data.price"
-                  :type="positive"
-                  :state="errors.length > 0 ? false:null"
-                  placeholder="Key Price"
+                  placeholder="Notes"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
@@ -89,7 +100,7 @@
 import BCardCode from '@core/components/b-card-code'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
-  BFormInput, BFormGroup, BForm, BRow, BCol, BButton,
+  BFormInput, BFormGroup, BForm, BRow, BCol, BButton, BFormSelect,
 } from 'bootstrap-vue'
 import { positive } from '@validations'
 // eslint-disable-next-line import/extensions
@@ -106,47 +117,84 @@ export default {
     BRow,
     BCol,
     BButton,
+    BFormSelect,
   },
   data() {
     return {
       data: {
         vehicle_id: '',
-        name: '',
-        description: '',
-        price: '',
+        key_id: '',
+        technician_id: '',
+        note: '',
+        status: '',
       },
+      vehiclesList: [],
+      keysList: [],
+      techniciansList: [],
+      statusList: [
+        {
+          value: 'pending',
+          text: 'Pending',
+        },
+        {
+          value: 'approved',
+          text: 'Approved',
+        },
+        {
+          value: 'declined',
+          text: 'Declined',
+        },
+      ],
       positive,
     }
   },
   created() {
-    console.log(this.$route.params.id)
     const { id } = this.$route.params
+    const request = [
+      this.$http.get('/api/vehicles'),
+      this.$http.get('/api/keys'),
+      this.$http.get('/api/technicians'),
+    ]
     if (id !== '0') {
-      this.$http.get(`/api/keys/${id}`)
-        .then(res => {
-          console.log(res.data.data)
-          this.data = res.data.data
-        })
+      request.push(this.$http.get(`/api/orders/${id}`))
     }
+    Promise.all(request).then(res => {
+      this.vehiclesList = res[0].data.data.map(record => ({
+        value: record.id,
+        text: `${record.year} ${record.make} ${record.model}`,
+      }))
+      this.keysList = res[1].data.data.map(record => ({
+        value: record.id,
+        text: `${record.name}`,
+      }))
+      this.techniciansList = res[2].data.data.map(record => ({
+        value: record.id,
+        text: `${record.last_name}, ${record.first_name}`,
+      }))
+      if (id !== '0') {
+        this.data = res[3].data.data
+      }
+    })
   },
   methods: {
     validationForm() {
       this.$refs.simpleRules.validate().then(() => {
         const data = {
           vehicle_id: this.data.vehicle_id,
-          name: this.data.name,
-          description: this.data.description,
-          price: this.data.price,
+          key_id: this.data.key_id,
+          technician_id: this.data.technician_id,
+          note: this.data.note,
+          status: this.data.status,
         }
         const { id } = this.$route.params
         if (id === '0') {
-          this.$http.post('/api/keys', data).then(() => {
-            this.$router.replace('/keys').then(() => {
+          this.$http.post('/api/orders', data).then(() => {
+            this.$router.replace('/home').then(() => {
               this.$toast({
                 component: ToastificationContent,
                 position: 'top-right',
                 props: {
-                  title: 'The key was created',
+                  title: 'The order was created',
                   icon: 'CoffeeIcon',
                   variant: 'success',
                 },
@@ -154,14 +202,13 @@ export default {
             })
           })
         } else {
-          console.log(data)
-          this.$http.put(`/api/keys/${id}`, data).then(() => {
-            this.$router.replace('/keys').then(() => {
+          this.$http.put(`/api/orders/${id}`, data).then(() => {
+            this.$router.replace('/home').then(() => {
               this.$toast({
                 component: ToastificationContent,
                 position: 'top-right',
                 props: {
-                  title: 'The key was updated',
+                  title: 'The order was updated',
                   icon: 'CoffeeIcon',
                   variant: 'success',
                 },

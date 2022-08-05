@@ -86,7 +86,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $input = $request->only('vehicle_id', 'key_id', 'technician_id', 'status');
+        $input = $request->only('vehicle_id', 'key_id', 'technician_id', 'status', 'note');
 
         $validator = Validator::make($input, [
             'vehicle_id'    => [Rule::exists('vehicles', 'id')],

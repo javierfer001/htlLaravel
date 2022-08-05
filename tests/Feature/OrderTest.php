@@ -235,6 +235,7 @@ class OrderTest extends TestCase
         $update = [
             'vehicle_id'    => $vehicles[2]->id,
             'key_id'        => $key2->id,
+            'note'          => 'Update the notes',
             'status'        => Order::STATUSES['APPROVED']
         ];
 
@@ -246,6 +247,7 @@ class OrderTest extends TestCase
                 'data'    => array(
                     'vehicle_id'    => $vehicles[2]->id,
                     'key_id'        => $key2->id,
+                    'note'          => 'Update the notes',
                     'status'        => Order::STATUSES['APPROVED']
                 )
             ])

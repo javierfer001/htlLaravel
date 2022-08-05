@@ -1,6 +1,6 @@
 <template>
   <b-card-code
-    title="Data Key"
+    title="Data Technician"
   >
     <validation-observer ref="simpleRules">
       <b-form>
@@ -9,13 +9,13 @@
             <b-form-group>
               <validation-provider
                 #default="{ errors }"
-                name="vehicle_id"
+                name="first_name"
                 rules="required"
               >
                 <b-form-input
-                  v-model="data.vehicle_id"
+                  v-model="data.first_name"
                   :state="errors.length > 0 ? false:null"
-                  placeholder="Vehicle ID"
+                  placeholder="First Name"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
@@ -25,13 +25,13 @@
             <b-form-group>
               <validation-provider
                 #default="{ errors }"
-                name="name"
+                name="last_name"
                 rules="required"
               >
                 <b-form-input
-                  v-model="data.name"
+                  v-model="data.last_name"
                   :state="errors.length > 0 ? false:null"
-                  placeholder="Key name"
+                  placeholder="Last Name"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
@@ -41,30 +41,13 @@
             <b-form-group>
               <validation-provider
                 #default="{ errors }"
-                name="description"
+                name="truck_number"
                 rules="required"
               >
                 <b-form-input
-                  v-model="data.description"
+                  v-model="data.truck_number"
                   :state="errors.length > 0 ? false:null"
-                  placeholder="Key Description"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-          <b-col md="6">
-            <b-form-group>
-              <validation-provider
-                #default="{ errors }"
-                name="price"
-                rules="required|positive"
-              >
-                <b-form-input
-                  v-model="data.price"
-                  :type="positive"
-                  :state="errors.length > 0 ? false:null"
-                  placeholder="Key Price"
+                  placeholder="Truck Number"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
@@ -110,21 +93,18 @@ export default {
   data() {
     return {
       data: {
-        vehicle_id: '',
-        name: '',
-        description: '',
-        price: '',
+        first_name: '',
+        last_name: '',
+        truck_number: '',
       },
       positive,
     }
   },
   created() {
-    console.log(this.$route.params.id)
     const { id } = this.$route.params
     if (id !== '0') {
-      this.$http.get(`/api/keys/${id}`)
+      this.$http.get(`/api/technicians/${id}`)
         .then(res => {
-          console.log(res.data.data)
           this.data = res.data.data
         })
     }
@@ -133,20 +113,19 @@ export default {
     validationForm() {
       this.$refs.simpleRules.validate().then(() => {
         const data = {
-          vehicle_id: this.data.vehicle_id,
-          name: this.data.name,
-          description: this.data.description,
-          price: this.data.price,
+          first_name: this.data.first_name,
+          last_name: this.data.last_name,
+          truck_number: this.data.truck_number,
         }
         const { id } = this.$route.params
         if (id === '0') {
-          this.$http.post('/api/keys', data).then(() => {
-            this.$router.replace('/keys').then(() => {
+          this.$http.post('/api/technicians', data).then(() => {
+            this.$router.replace('/technicians').then(() => {
               this.$toast({
                 component: ToastificationContent,
                 position: 'top-right',
                 props: {
-                  title: 'The key was created',
+                  title: 'The technician was created',
                   icon: 'CoffeeIcon',
                   variant: 'success',
                 },
@@ -154,14 +133,13 @@ export default {
             })
           })
         } else {
-          console.log(data)
-          this.$http.put(`/api/keys/${id}`, data).then(() => {
-            this.$router.replace('/keys').then(() => {
+          this.$http.put(`/api/technicians/${id}`, data).then(() => {
+            this.$router.replace('/technicians').then(() => {
               this.$toast({
                 component: ToastificationContent,
                 position: 'top-right',
                 props: {
-                  title: 'The key was updated',
+                  title: 'The technician was updated',
                   icon: 'CoffeeIcon',
                   variant: 'success',
                 },
