@@ -44,7 +44,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'      => 'required',
+            'email'     => 'required',
             'password'  => 'required',
         ]);
 
@@ -60,7 +60,10 @@ class AuthController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 $tokenResult = $user->createToken('accessToken');
                 $token = $tokenResult->plainTextToken;
-                return $this->resSuccess($token, "Welcome {$user->email}");
+                return $this->resSuccess([
+                    'token' => $token,
+                    'user'  => $user->toArray(),
+                ], "Welcome {$user->name}");
             } else {
                 return $this->resError('Password mismatch');
             }

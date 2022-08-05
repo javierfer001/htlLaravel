@@ -7,10 +7,6 @@
           to="/"
         >
           <span class="brand-logo">
-            <b-img
-              :src="appLogoImage"
-              alt="logo"
-            />
           </span>
           <h2 class="brand-text mb-0">
             {{ appName }}
