@@ -11,7 +11,7 @@ const router = new VueRouter({
   },
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: () => import('@/views/Home.vue'),
       meta: {
@@ -19,6 +19,48 @@ const router = new VueRouter({
         breadcrumb: [
           {
             text: 'Home',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/keys',
+      name: 'keys',
+      component: () => import('@/views/key/List.vue'),
+      meta: {
+        pageTitle: 'Key',
+        breadcrumb: [
+          {
+            text: 'Key',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/technicians',
+      name: 'technicians',
+      component: () => import('@/views/technician/List.vue'),
+      meta: {
+        pageTitle: 'Technician',
+        breadcrumb: [
+          {
+            text: 'technician',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/vehicles',
+      name: 'vehicles',
+      component: () => import('@/views/vehicle/List.vue'),
+      meta: {
+        pageTitle: 'Vehicle',
+        breadcrumb: [
+          {
+            text: 'vehicle',
             active: true,
           },
         ],
@@ -56,7 +98,7 @@ const router = new VueRouter({
     },
     {
       path: '*',
-      redirect: 'error-404',
+      redirect: '/home',
     },
   ],
 })

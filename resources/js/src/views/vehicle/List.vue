@@ -15,19 +15,8 @@
         slot="table-row"
         slot-scope="props"
       >
-        <span v-if="props.column.field == 'vehicle'">
-          {{ props.row.vehicle.year }}<span style="font-weight: bold;"> {{ props.row.vehicle.make }} {{ props.row.vehicle.model }}</span>
-        </span>
-        <span v-else-if="props.column.field == 'status'">
-          <b-badge :variant="statusVariant(props.row.status)">
-            {{ props.row.status }}
-          </b-badge>
-        </span>
-        <span v-else-if="props.column.field == 'technician'">
-          {{ props.row.technician.first_name }} {{ props.row.technician.last_name }}
-        </span>
         <!-- Column: Action -->
-        <span v-else-if="props.column.field === 'action'">
+        <span v-if="props.column.field === 'action'">
           <b-button variant="outline-primary">
             <feather-icon
               icon="Edit2Icon"
@@ -96,9 +85,9 @@
   </b-card-code>
 </template>
 <style scoped>
-.vgt-table {
-    font-size: 12px !important;
-}
+    .vgt-table {
+        font-size: 12px !important;
+    }
 </style>
 <script>
 import BCardCode from '@core/components/b-card-code/BCardCode.vue'
@@ -106,7 +95,7 @@ import BCardCode from '@core/components/b-card-code/BCardCode.vue'
 import 'vue-good-table/dist/vue-good-table.css'
 
 import {
-  BButton, BBadge, BPagination, BFormSelect,
+  BButton, BPagination, BFormSelect,
 } from 'bootstrap-vue'
 
 import { VueGoodTable } from 'vue-good-table'
@@ -118,7 +107,6 @@ export default {
     BCardCode,
     VueGoodTable,
     BButton,
-    BBadge,
     BPagination,
     BFormSelect,
   },
@@ -132,24 +120,20 @@ export default {
           field: 'id',
         },
         {
-          label: 'VEHICLE',
-          field: 'vehicle',
+          label: 'YEAR',
+          field: 'year',
         },
         {
-          label: 'KEY ID',
-          field: 'key.name',
+          label: 'MAKE',
+          field: 'make',
         },
         {
-          label: 'TECHNICIAN',
-          field: 'technician',
+          label: 'MODELS',
+          field: 'model',
         },
         {
-          label: 'NOTE',
-          field: 'note',
-        },
-        {
-          label: 'STATUS',
-          field: 'status',
+          label: 'VIN',
+          field: 'vin',
         },
         {
           label: 'ACTION',
@@ -160,14 +144,6 @@ export default {
     }
   },
   computed: {
-    statusVariant() {
-      const statusColor = {
-        approved: 'light-success',
-        declined: 'light-danger',
-        pending: 'light-warning',
-      }
-      return status => statusColor[status]
-    },
     direction() {
       if (store.state.appConfig.isRTL) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -180,7 +156,7 @@ export default {
     },
   },
   created() {
-    this.$http.get('/api/orders')
+    this.$http.get('/api/vehicles')
       .then(res => {
         this.rows = res.data.data
       })

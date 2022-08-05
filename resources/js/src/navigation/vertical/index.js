@@ -1,12 +1,22 @@
 export default [
   {
-    title: 'Home',
+    title: 'Order',
     route: 'home',
-    icon: 'HomeIcon',
+    icon: 'ListIcon',
   },
   {
-    title: 'Second Page',
-    route: 'second-page',
-    icon: 'FileIcon',
+    title: 'Vehicle',
+    route: 'vehicles',
+    icon: 'TruckIcon',
+  },
+  {
+    title: 'Key',
+    route: 'keys',
+    icon: 'KeyIcon',
+  },
+  {
+    title: 'Technician',
+    route: 'technicians',
+    icon: 'UserIcon',
   },
 ]
