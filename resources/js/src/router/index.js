@@ -130,6 +130,14 @@ const router = new VueRouter({
         layout: 'full',
       },
     },
+      {
+          path: '/register',
+          name: 'register',
+          component: () => import('@/views/Register.vue'),
+          meta: {
+              layout: 'full',
+          },
+      },
     {
       path: '/error-404',
       name: 'error-404',

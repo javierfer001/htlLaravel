@@ -5,7 +5,7 @@
       <!-- Brand logo-->
       <b-link class="brand-logo">
         <h2 class="brand-text text-primary ml-1">
-          Kar Global
+          HTL
         </h2>
       </b-link>
       <!-- /Brand logo-->
@@ -74,9 +74,6 @@
               <b-form-group>
                 <div class="d-flex justify-content-between">
                   <label for="login-password">Password</label>
-                  <b-link :to="{name:'auth-forgot-password-v2'}">
-                    <small>Forgot Password?</small>
-                  </b-link>
                 </div>
                 <validation-provider
                   #default="{ errors }"
@@ -119,6 +116,12 @@
               </b-button>
             </b-form>
           </validation-observer>
+            <b-card-text class="text-center mt-2">
+                <span>New on our platform? </span>
+                <b-link :to="{name:'register'}">
+                    <span>Create an account</span>
+                </b-link>
+            </b-card-text>
         </b-col>
       </b-col>
     <!-- /Login-->
@@ -148,6 +151,7 @@ export default {
     BInputGroupAppend,
     BInputGroup,
     BCardTitle,
+    BCardText,
     BImg,
     BForm,
     BButton,

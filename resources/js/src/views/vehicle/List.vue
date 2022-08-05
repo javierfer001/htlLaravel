@@ -155,6 +155,8 @@ export default {
         {
           label: 'ACTION',
           field: 'action',
+          sortable: false,
+          width: '150px',
         },
       ],
       rows: [],

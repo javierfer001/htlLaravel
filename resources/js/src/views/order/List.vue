@@ -36,7 +36,7 @@
           {{ props.row.technician.first_name }} {{ props.row.technician.last_name }}
         </span>
         <!-- Column: Action -->
-        <span v-else-if="props.column.field === 'action'">
+        <span v-else-if="props.column.field === 'action'" style="min-width: 200px">
           <b-button
             :href="'/orders/' + props.row.id"
             variant="outline-primary"
@@ -170,6 +170,8 @@ export default {
         {
           label: 'ACTION',
           field: 'action',
+          sortable: false,
+          width: '150px',
         },
       ],
       rows: [],
