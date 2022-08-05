@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KeyController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\TechnicianController;
 use App\Http\Controllers\Api\VehicleController;
 use Illuminate\Support\Facades\Route;
@@ -44,4 +45,12 @@ Route::controller(TechnicianController::class)->prefix('technicians')->group(fun
     Route::get('/{technician}', 'show');
     Route::put('/{technician}', 'update');
     Route::delete('/{technician}', 'destroy');
+});
+
+Route::controller(OrderController::class)->prefix('orders')->group(function () {
+    Route::get('/', 'index');
+    Route::post('/', 'store');
+    Route::get('/{order}', 'show');
+    Route::put('/{order}', 'update');
+    Route::delete('/{order}', 'destroy');
 });
