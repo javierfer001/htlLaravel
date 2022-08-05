@@ -39,6 +39,20 @@ const router = new VueRouter({
       },
     },
     {
+      path: '/keys/:id',
+      name: 'keys-add',
+      component: () => import('@/views/key/Add.vue'),
+      meta: {
+        pageTitle: 'Key',
+        breadcrumb: [
+          {
+            text: 'Key data',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
       path: '/technicians',
       name: 'technicians',
       component: () => import('@/views/technician/List.vue'),

@@ -1,8 +1,17 @@
 <template>
-    <b-card-code>
+  <b-card-code>
+    <b-button
+      class="mb-1"
+      variant="outline-success"
+      href="/keys/0"
+    >
+      <feather-icon
+        icon="PlusIcon"
+      />
+    </b-button>
     <!-- table -->
     <vue-good-table
-      styleClass="vgt-table bordered"
+      style-class="vgt-table bordered"
       :columns="columns"
       :rows="rows"
       :rtl="direction"
@@ -17,16 +26,22 @@
       >
         <!-- Column: Action -->
         <span v-if="props.column.field === 'action'">
-            <b-button variant="outline-primary">
-                <feather-icon
-                    icon="Edit2Icon"
-                />
-              </b-button>
-              <b-button variant="outline-danger">
-                <feather-icon
-                    icon="TrashIcon"
-                />
-              </b-button>
+          <b-button
+            :href="'/keys/' + props.row.id"
+            variant="outline-primary"
+          >
+            <feather-icon
+              icon="Edit2Icon"
+            />
+          </b-button>
+          <b-button
+            variant="outline-danger"
+            @click="edit(props.row.id)"
+          >
+            <feather-icon
+              icon="TrashIcon"
+            />
+          </b-button>
         </span>
         <!-- Column: Common -->
         <span v-else>
@@ -95,12 +110,14 @@ import BCardCode from '@core/components/b-card-code/BCardCode.vue'
 import 'vue-good-table/dist/vue-good-table.css'
 
 import {
-  BButton, BPagination, BFormSelect
+  BButton, BPagination, BFormSelect,
 } from 'bootstrap-vue'
 
 import { VueGoodTable } from 'vue-good-table'
 
 import store from '@/store/index'
+// eslint-disable-next-line import/extensions
+import ToastificationContent from '@core/components/toastification/ToastificationContent'
 
 export default {
   components: {
@@ -154,9 +171,31 @@ export default {
   created() {
     this.$http.get('/api/keys')
       .then(res => {
-        console.log(res.data.data)
         this.rows = res.data.data
       })
+  },
+  methods: {
+    edit(id) {
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm('Are you sure that you want to delete de record')) {
+        this.$http.delete(`/api/keys/${id}`)
+          .then(() => {
+            this.$http.get('/api/keys')
+              .then(res => {
+                this.rows = res.data.data
+              })
+          }).catch(() => {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'You can not delete the key other records are using it',
+                icon: 'EditIcon',
+                variant: 'danger',
+              },
+            })
+          })
+      }
+    },
   },
 }
 </script>
